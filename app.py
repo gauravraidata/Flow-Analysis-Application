@@ -297,7 +297,6 @@ def validate_decimal(value_str, field_name):
 
 # ─── PLOT GENERATION ──────────────────────────────────────────────────────────
 def generate_heatmap_fig(matrix, inputs):
-    """Generate a high-quality heatmap figure."""
     fig, ax = plt.subplots(figsize=(8, 7))
     fig.patch.set_facecolor('#0d1b2e')
     ax.set_facecolor('#0d1b2e')
@@ -310,15 +309,18 @@ def generate_heatmap_fig(matrix, inputs):
     cbar.set_label('Concentration Value', color='#a8c8e8', fontsize=10, labelpad=10)
     cbar.ax.yaxis.set_tick_params(color='#a8c8e8', labelsize=8)
     plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='#a8c8e8')
-    cbar.outline.set_edgecolor('rgba(255,255,255,0.15)')
+
+    # ✅ FIXED HERE
+    cbar.outline.set_edgecolor((1, 1, 1, 0.15))
 
     ax.set_xticks(range(15))
     ax.set_yticks(range(15))
     ax.set_xticklabels([str(i+1) for i in range(15)], color='#7fb3d3', fontsize=8)
     ax.set_yticklabels([str(i+1) for i in range(15)], color='#7fb3d3', fontsize=8)
 
+    # ✅ FIXED HERE
     for spine in ax.spines.values():
-        spine.set_edgecolor('rgba(0,100,200,0.3)')
+        spine.set_edgecolor((0/255, 100/255, 200/255, 0.3))
 
     ax.set_xlabel("Column Index", color='#a8c8e8', fontsize=10, labelpad=8)
     ax.set_ylabel("Row Index", color='#a8c8e8', fontsize=10, labelpad=8)
