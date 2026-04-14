@@ -625,7 +625,7 @@ if run_btn:
                         text = '#111' if norm_val < 0.5 else '#fff'
                         return f'background-color: rgb({r},{g},{b}); color: {text}; font-size: 10px;'
 
-                    styled = df_display.style.applymap(color_cells).format("{:.4f}")
+                    styled = df_display.style.map(color_cells).format("{:.4f}")
                     st.dataframe(styled, use_container_width=True, height=485)
 
                 # ─── DOWNLOADS ────────────────────────────────────────────────
