@@ -201,18 +201,19 @@ def generate_heatmap_fig(matrix, inputs):
     # ── Inlet indicators ─────────────────────────────────────────────────────
     # Circular mask rows 0 & 14 each have exactly 7 cells: cols 4..10
     # origin='lower': imshow x=col, y=row
-    # Arrow tips land precisely on the corner cells of the 7-point rows/cols:
-    #   I1 lower-left  → col=4,  row=0   (first cell, bottom row)
-    #   I2 upper-left  → col=4,  row=14  (first cell, top row)
-    #   I3 upper-right → col=10, row=14  (last  cell, top row)
-    #   I4 lower-right → col=10, row=0   (last  cell, bottom row)
+    # Col 0 and col 14 each have 7 active cells at rows 4..10.
+    # Arrows point to the FIRST and LAST active cell of the FIRST and LAST COLUMN:
+    #   I1 lower-left  → col=0,  row=4   (bottom active cell of col 0)
+    #   I2 upper-left  → col=0,  row=10  (top    active cell of col 0)
+    #   I3 upper-right → col=14, row=10  (top    active cell of col 14)
+    #   I4 lower-right → col=14, row=4   (bottom active cell of col 14)
 
     inlets = [
         # (label, tip_xy(col,row), text_offset, ha, va, color, is_tracer, flow_val)
-        ("I₁",  (4,  0),  (-3.5, -3.5), 'right', 'top',    '#ffd700', True,  inputs[0]),
-        ("I₂",  (4,  14), (-3.5,  3.5), 'right', 'bottom', '#7fb3d3', False, inputs[1]),
-        ("I₃",  (10, 14), ( 3.5,  3.5), 'left',  'bottom', '#7fb3d3', False, inputs[2]),
-        ("I₄",  (10, 0),  ( 3.5, -3.5), 'left',  'top',    '#7fb3d3', False, inputs[3]),
+        ("I₁",  (0,  4),  (-3.8, -3.5), 'right', 'top',    '#ffd700', True,  inputs[0]),
+        ("I₂",  (0,  10), (-3.8,  3.5), 'right', 'bottom', '#7fb3d3', False, inputs[1]),
+        ("I₃",  (14, 10), ( 3.8,  3.5), 'left',  'bottom', '#7fb3d3', False, inputs[2]),
+        ("I₄",  (14, 4),  ( 3.8, -3.5), 'left',  'top',    '#7fb3d3', False, inputs[3]),
     ]
 
     for label, tip, offset, ha, va, color, is_tracer, fval in inlets:
@@ -376,7 +377,7 @@ st.markdown("""
 <div class="main-header">
     <h1>⚛️ Flow Mixing Analysis for Steady State</h1>
     <p class="subtitle">Machine Learning Prediction Model &nbsp;•&nbsp; Nuclear Reactor Mixing &nbsp;•&nbsp; Circular 193-Point Concentration Map</p>
-    <div class="special-note">📌 Tracer is constant @ 2 g/L &nbsp;|&nbsp; Tracer number will be added later</div>
+    <div class="special-note">📌 Tracer is constant @ 2 g/L </div>
 </div>
 """, unsafe_allow_html=True)
 
