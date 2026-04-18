@@ -297,33 +297,43 @@ def validate_decimal(value_str, field_name):
 
 # ─── PLOT GENERATION ──────────────────────────────────────────────────────────
 def generate_heatmap_fig(matrix, inputs):
+    """Generate a high-quality heatmap figure."""
     fig, ax = plt.subplots(figsize=(8, 7))
     fig.patch.set_facecolor('#0d1b2e')
     ax.set_facecolor('#0d1b2e')
 
     vmin, vmax = matrix.min(), matrix.max()
-    im = ax.imshow(matrix, cmap='Reds', interpolation='nearest', aspect='equal',
-                   vmin=vmin, vmax=vmax)
+
+    # jet colormap matches the reference image (blue→cyan→green→yellow→orange→red)
+    # origin='lower' puts row 0 at bottom so both axes start from 0 at origin
+    im = ax.imshow(
+        matrix,
+        cmap='jet',
+        interpolation='nearest',
+        aspect='equal',
+        vmin=vmin,
+        vmax=vmax,
+        origin='lower'
+    )
 
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.set_label('Concentration Value', color='#a8c8e8', fontsize=10, labelpad=10)
     cbar.ax.yaxis.set_tick_params(color='#a8c8e8', labelsize=8)
     plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='#a8c8e8')
-
-    # ✅ FIXED HERE
     cbar.outline.set_edgecolor((1, 1, 1, 0.15))
 
-    ax.set_xticks(range(15))
-    ax.set_yticks(range(15))
-    ax.set_xticklabels([str(i+1) for i in range(15)], color='#7fb3d3', fontsize=8)
-    ax.set_yticklabels([str(i+1) for i in range(15)], color='#7fb3d3', fontsize=8)
+    # Both axes: 0 → 14 (aligned — same origin point at bottom-left)
+    ticks = list(range(15))
+    ax.set_xticks(ticks)
+    ax.set_yticks(ticks)
+    ax.set_xticklabels([str(i) for i in ticks], color='#7fb3d3', fontsize=7.5)
+    ax.set_yticklabels([str(i) for i in ticks], color='#7fb3d3', fontsize=7.5)
 
-    # ✅ FIXED HERE
     for spine in ax.spines.values():
         spine.set_edgecolor((0/255, 100/255, 200/255, 0.3))
 
-    ax.set_xlabel("Column Index", color='#a8c8e8', fontsize=10, labelpad=8)
-    ax.set_ylabel("Row Index", color='#a8c8e8', fontsize=10, labelpad=8)
+    ax.set_xlabel("Receiver", color='#a8c8e8', fontsize=11, fontweight='600', labelpad=10)
+    ax.set_ylabel("Transmitter", color='#a8c8e8', fontsize=11, fontweight='600', labelpad=10)
     ax.tick_params(colors='#7fb3d3', length=4)
 
     title = (f"Tracer Concentration Distribution\n"
@@ -625,7 +635,7 @@ if run_btn:
                         text = '#111' if norm_val < 0.5 else '#fff'
                         return f'background-color: rgb({r},{g},{b}); color: {text}; font-size: 10px;'
 
-                    styled = df_display.style.map(color_cells).format("{:.4f}")
+                    styled = df_display.style.applymap(color_cells).format("{:.4f}")
                     st.dataframe(styled, use_container_width=True, height=485)
 
                 # ─── DOWNLOADS ────────────────────────────────────────────────
