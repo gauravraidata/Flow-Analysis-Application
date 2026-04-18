@@ -492,6 +492,12 @@ if run_btn:
                         index=[f"T{i:02d}" for i in range(15)],
                         columns=[f"R{i:02d}" for i in range(15)]
                     )
+                    
+                    # 🔥 Flip vertically to match heatmap (origin='lower')
+                    df_display = df_display.iloc[::-1]
+                    
+                    # Optional: relabel index so it still shows 0→14 bottom to top
+                    df_display.index = [f"T{i:02d}" for i in range(14, -1, -1)]
 
                     vmin_d = valid_vals.min()
                     vrange_d = max(valid_vals.max() - vmin_d, 1e-9)
